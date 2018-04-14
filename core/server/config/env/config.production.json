@@ -1,0 +1,22 @@
+{
+  "database": {
+    "client": "mongodb",
+    "connection": {
+      "url": "mongodb://localhost:27017",
+      "user": "nahang_web",
+      "password": "nahang_web",
+      "dbName": "nahang_production"
+    }
+  },
+  "paths": {
+    "contentPath": "content/"
+  },
+  "useMinFiles": true,
+  "logging": {
+    "level": "info",
+    "rotation": {
+      "enabled": true
+    },
+    "transports": ["stdout", "file"]
+  }
+}

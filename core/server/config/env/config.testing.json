@@ -1,0 +1,24 @@
+{
+  "database": {
+    "client": "mongodb",
+    "connection": {
+      "url": "mongodb://localhost:27017",
+      "user": "nahang_web",
+      "password": "nahang_web",
+      "dbName": "nahang_testing"
+    },
+    "debug": true
+  },
+  "paths": {
+    "contentPath": "content/"
+  },
+  "useMinFiles": false,
+  "caching": {
+    "theme": {
+      "maxAge": 0
+    },
+    "admin": {
+      "maxAge": 0
+    }
+  }
+}

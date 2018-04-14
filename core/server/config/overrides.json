@@ -1,0 +1,16 @@
+{
+  "paths": {
+    "appRoot": ".",
+    "corePath": "core/",
+    "clientAssets": "core/built/assets",
+    "adminViews": "core/server/web/admin/views",
+    "internalStoragePath": "core/server/adapters/storage",
+    "publicFilePath": "core/server/public"
+  },
+  "times": {
+    "getImageSizeTimeoutInMS": 5000
+  },
+  "maintenance": {
+    "enabled": false,
+  }
+}
