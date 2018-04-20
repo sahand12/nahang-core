@@ -23,9 +23,9 @@ const settings = require('./services/settings');
 
 // # Initialize Nahang
 /**
- * @returns {Promise}
+ * @returns {Promise<NahangServer>}
  */
-function init() {
+async function init() { // @TODO: Account for errors
   debug('Init Start...');
   let nahangServer;
   let parentApp;
@@ -38,49 +38,28 @@ function init() {
   models.init();
   debug('model done');
 
-  // Returns a Promise which resolves to NahangServer instance.
-  return dbHealth.check()
-    .then(initSettings)
-    .then(initPermissions)
-    .then(setupParentApp)
-    .then(initAuth)
-    .then(returnServer);
+  await dbHealth.check();
+  debug('DB health check done');
 
-  function initSettings() {
-    debug('DB health check done');
+  // Populate any missing default settings
+  // Refresh the API settings cache.
+  await settings.init();
+  debug('Update settings cache done');
 
-    // Populate any missing default settings
-    // Refresh the API settings cache.
-    return settings.init();
-  }
+  // Initialize the permissions actions and objects.
+  await permissions.init();
+  debug('Permissions done');
 
-  function initPermissions() {
-    debug('Update settings cache done');
+  parentApp = require('./web/parent-app')();
+  debug('Express Apps done');
 
-    // Initialize the permissions actions and objects.
-    return permissions.init();
-  }
+  parentApp.use(auth.init());
+  debug('Auth done');
 
-  function setupParentApp() {
-    debug('Permissions done');
-
-    parentApp = require('./web/parent-app')();
-    debug('Express Apps done');
-  }
-
-  function initAuth() {
-    parentApp.use(auth.init());
-    debug('Auth done');
-
-    return new NahangServer(parentApp);
-  }
-
-  function returnServer(_nahangServer) {
-    nahangServer = _nahangServer;
-    debug('Server done');
-    debug('...Init End');
-    return nahangServer;
-  }
+  nahangServer = new NahangServer(parentApp);
+  debug('Server done');
+  debug('...Init End');
+  return nahangServer;
 }
 
 module.exports = init;
